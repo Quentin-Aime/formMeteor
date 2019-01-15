@@ -12,7 +12,6 @@ class Form extends Component {
         this.handleChange = this.handleChange.bind(this);
     }
     addGuyBtn = () => {
-        console.debug('coucou');
         if (this.state.name === '') {
             console.error('no name given, user wasn\'t register');
         }

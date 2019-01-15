@@ -2,6 +2,7 @@ import peopleDB from '../../../imports/db/peopleDB';
 import React, { Component } from 'react';
 import { withTracker } from 'meteor/react-meteor-data';
 import {Meteor} from 'meteor/meteor';
+import {Link} from 'react-router-dom';
 
 class List extends Component {
     constructor(props) {
@@ -10,6 +11,7 @@ class List extends Component {
             name: '',
             mail: ''
         };
+        // this.redirectToUser = this.redirectToUser.bind(this)
     }
     delete = (id, e) => {
         e.preventDefault();
@@ -19,12 +21,11 @@ class List extends Component {
     }
     render() {
         const { users } = this.props;
-        console.debug(users);
         return (
             <ul>
                 {users.map(user => (
                     <li key={user._id}>
-                        <button>Editer</button>
+                            <Link to={'/edit/' + user._id}><button>Editer</button></Link>
                         <button onClick={(e) => this.delete(user._id, e)}>X</button>
                         {user.name} {user.mail}
                     </li>
@@ -33,17 +34,6 @@ class List extends Component {
         );
     }
 }
-// const users = withTracker(() => {
-//     let users = [];
-//     const userHandle = Meteor.subscribe('peopleDB');
-//     const loading = !userHandle.ready();
-//     const data = peopleDB.find({});
-//     const dataExists = !loading && data;
-//     console.debug(data);
-
-//     return '';
-// })(List);
-
 export default withTracker(() => {
     return {
         users: peopleDB.find().fetch()
