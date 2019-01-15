@@ -11,13 +11,23 @@ class List extends Component {
             mail: ''
         };
     }
+    delete = (id, e) => {
+        e.preventDefault();
+        peopleDB.remove({
+            _id: id
+        })
+    }
     render() {
         const { users } = this.props;
         console.debug(users);
         return (
             <ul>
                 {users.map(user => (
-                    <li key={user._id}>{user.name} {user.mail}</li>
+                    <li key={user._id}>
+                        <button>Editer</button>
+                        <button onClick={(e) => this.delete(user._id, e)}>X</button>
+                        {user.name} {user.mail}
+                    </li>
                 ))}
             </ul>
         );
