@@ -1,5 +1,7 @@
-import peopleDB from "../../../imports/db/peopleDB";
+
 import React, { Component } from 'react';
+import { Meteor } from 'meteor/meteor';
+import peopleDB from '../../../imports/db/peopleDB';
 
 
 class Form extends Component {
@@ -18,10 +20,8 @@ class Form extends Component {
         if (this.state.mail === '') {
             console.error('no mail given, user wasn\'t register');
         }
-        peopleDB.insert({
-            name: this.state.name,
-            mail: this.state.mail,
-        });
+        Meteor.call('addUser', this.state.name, this.state.mail);
+        
     }
     handleChange (event) {
         this.setState({
