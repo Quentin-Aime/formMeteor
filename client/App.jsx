@@ -17,3 +17,5 @@ const App = () => (
 export default App;
 
 
+// TODO passer par meteor.call (front)
+// et passer par meteor.method (back)

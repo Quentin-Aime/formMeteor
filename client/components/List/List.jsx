@@ -11,12 +11,11 @@ class List extends Component {
             name: '',
             mail: ''
         };
-        // this.redirectToUser = this.redirectToUser.bind(this)
     }
     delete = (id, e) => {
         e.preventDefault();
-        peopleDB.remove({
-            _id: id
+        Meteor.call('deleteUser', id, (error, result) => {
+            console.debug(result);
         })
     }
     render() {

@@ -7,7 +7,6 @@ import {Link} from 'react-router-dom';
 class Edit extends Component {
     constructor(props) {
         super(props);
-        console.debug(props);
         this.state = {
             name: '',
             mail: '',
@@ -27,10 +26,10 @@ class Edit extends Component {
         }
     }
     submit = () => {
-        peopleDB.update({_id: this.props.match.params.uid}, {
-            name: this.state.name,
-            mail: this.state.mail,
-        });
+        let id = this.props.match.params.uid;
+        Meteor.call('editUser', id, this.state.name, this.state.mail, (error, result) => {
+            console.debug(result);
+        })
         this.props.history.push('/');
     }
     render() {

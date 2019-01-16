@@ -5,5 +5,6 @@ import App from './App.jsx';
 
 
 Meteor.startup(() => {
+    Meteor.subscribe('peopleDB');
     render(<App />,  document.getElementById('react-target'));
 });

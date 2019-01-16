@@ -15,12 +15,29 @@ Meteor.startup(() => {
     }
 });
 
+Meteor.publish('peopleDB', () => {
+    return peopleDB.find();
+});
+
 Meteor.methods({
+    addUser(name, mail) {
+        peopleDB.insert({
+            name: name,
+            mail: mail
+        });
+    },
     deleteUser(id) {
-        check(id, String);
         peopleDB.remove({
             _id: id
         });
         return 'user deleted';
+    },
+    editUser(id, name, mail) {
+        peopleDB.update({_id: id}, {
+            name: name,
+            mail: mail,
+        });
+        return 'user edited'
+
     }
 });
