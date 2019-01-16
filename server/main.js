@@ -14,3 +14,12 @@ Meteor.startup(() => {
     });
   }
 });
+
+Meteor.methods({
+  addUser(name, mail) {
+      peopleDB.insert({
+          name: name,
+          mail: mail
+      })
+  }
+});
