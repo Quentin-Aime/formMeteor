@@ -2,6 +2,7 @@ import peopleDB from '../../../imports/db/peopleDB';
 import React, { Component } from 'react';
 import { withTracker } from 'meteor/react-meteor-data';
 import {Meteor} from 'meteor/meteor';
+import {Session} from 'meteor/session';
 import {Link} from 'react-router-dom';
 
 class Edit extends Component {
@@ -10,7 +11,9 @@ class Edit extends Component {
         this.state = {
             name: '',
             mail: '',
-            setup: true
+            level: false,
+            setup: true,
+            adminName:''
         };
     }
     changing = (value) => (event) => {
@@ -27,17 +30,29 @@ class Edit extends Component {
     }
     submit = () => {
         let id = this.props.match.params.uid;
-        Meteor.call('editUser', id, this.state.name, this.state.mail, (error, result) => {
+        Meteor.call('editUser', Session.get('loggedUserID'), id, this.state.name, this.state.mail, this.state.level, (error, result) => {
+            if (error) {
+                console.error(error.reason);
+                this.props.history.push('/');
+            }
             console.debug(result);
         })
         this.props.history.push('/');
     }
+    changeLevel = () => {
+        let level = this.state.level;
+        this.setState({
+            level: !level,
+        })
+    }
     render() {
         const { user } = this.props;
+        console.debug(user);
         if (user && this.state.setup === true) {
             this.setState({
                 name: user.name,
                 mail: user.mail,
+                level: user.isATeacher,
                 setup: false
             })
         }
@@ -46,8 +61,14 @@ class Edit extends Component {
                 <Link to='/'>Home</Link>
                 {user && (
                     <div>
+                        <label>Name</label>
                         <input onChange={this.changing('name')} value={this.state.name}></input>
+                        <label>Mail</label>
                         <input onChange={this.changing('mail')} value={this.state.mail}></input>
+                        <label>Password</label>
+                        <input onChange={this.changing('mail')} value={this.state.mail}></input>
+                        <label>Teacher</label>
+                        <input onClick={this.changeLevel} checked={this.state.level} type="checkBox"></input>
                         <button onClick={this.submit}>Submit</button>
                     </div>
                 )}

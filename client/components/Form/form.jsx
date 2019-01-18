@@ -9,7 +9,9 @@ class Form extends Component {
         super(props);
         this.state = {
             name: '',
-            mail: ''
+            mail: '',
+            pwd: '',
+            level: false
         };
         this.handleChange = this.handleChange.bind(this);
     }
@@ -20,13 +22,25 @@ class Form extends Component {
         if (this.state.mail === '') {
             console.error('no mail given, user wasn\'t register');
         }
-        Meteor.call('addUser', this.state.name, this.state.mail);
+        Meteor.call('addUser', this.state.name, this.state.mail, this.state.pwd, this.state.level);
+        this.setState({
+            name: '',
+            mail: '',
+            pwd: '',
+            level: false
+        })
         
     }
     handleChange (event) {
         this.setState({
             [event.target.name]: event.target.value
         });
+    }
+    changeLevel = () => {
+        let level = this.state.level;
+        this.setState({
+            level: !level,
+        })
     }
     render () {
         return (
@@ -35,6 +49,10 @@ class Form extends Component {
                 <input onChange={this.handleChange} name="name" id="name" type="text" value={this.state.name}></input>
                 <label className="form_label_name" htmlFor="mail">Mail</label>
                 <input onChange={this.handleChange} name="mail" id="mail" type="text" value={this.state.mail}></input>
+                <label className="form_label_name" htmlFor="pwd">Password</label>
+                <input onChange={this.handleChange} name="pwd" id="pwd" type="text" value={this.state.pwd}></input>
+                <label className="form_label_name" htmlFor="level">Teacher</label>
+                <input onClick={this.changeLevel} name="level" id="mail" type="checkbox" value={this.state.level}></input>
                 <button onClick={this.addGuyBtn}>Just do it !</button>
             </div>
         );
